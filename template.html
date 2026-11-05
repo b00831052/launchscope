@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Launchscope</title>
+<style>
+:root{--ground:#f3f1ec;--panel:#fff;--panel2:#faf8f3;--ink:#182b40;--soft:#4a5b6e;--faint:#8a95a2;--line:#e3ded4;--line2:#eeeae1;--navy:#0e2135;--accent:#8a1c2b;--accent-soft:#f2e4e2;
+--A:#1a7a4c;--B:#4f8a3c;--C:#9c7a1a;--D:#c0661f;--F:#b3231f;--chip:#efece4}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--ground:#0b131d;--panel:#111d2b;--panel2:#0e1826;--ink:#e8ecf1;--soft:#9aa7b6;--faint:#657283;--line:#1f2c3b;--line2:#16202c;--navy:#081019;--accent:#cf6f77;--accent-soft:#2a1518;--A:#3ec37e;--B:#8bc34a;--C:#cba94a;--D:#e08a4a;--F:#e5675a;--chip:#16202c}}
+:root[data-theme=dark]{--ground:#0b131d;--panel:#111d2b;--panel2:#0e1826;--ink:#e8ecf1;--soft:#9aa7b6;--faint:#657283;--line:#1f2c3b;--line2:#16202c;--navy:#081019;--accent:#cf6f77;--accent-soft:#2a1518;--A:#3ec37e;--B:#8bc34a;--C:#cba94a;--D:#e08a4a;--F:#e5675a;--chip:#16202c}
+*{box-sizing:border-box}body{margin:0;background:var(--ground);color:var(--ink);font:14px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:"SF Mono",Menlo,Consolas,monospace}.serif{font-family:Georgia,"Times New Roman",serif}
+header{background:var(--navy);color:#fff;padding:22px 28px 20px}
+.brand{display:flex;align-items:center;gap:10px;font:700 20px Georgia,serif}.brand .mk{width:26px;height:26px;border-radius:3px;background:var(--accent);display:grid;place-items:center;font:800 14px -apple-system,sans-serif;color:#fff}
+.brand em{font-style:italic;color:#d99aa0}.tag{font:600 9.5px "SF Mono",monospace;letter-spacing:.18em;color:#7e8fa1;margin-top:4px}
+.hl{font:700 clamp(22px,3.4vw,30px)/1.15 Georgia,serif;margin:16px 0 4px;max-width:30ch}.sub{color:#b9c5d3;font-size:14px;max-width:70ch}
+main{max-width:1240px;margin:0 auto;padding:22px 24px 70px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:18px}
+.cards>div{background:var(--panel);padding:14px 16px}.k{font-size:11.5px;color:var(--soft)}.v{font:700 24px Georgia,serif;font-variant-numeric:tabular-nums;margin-top:4px}
+.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;margin-bottom:18px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:16px 18px}.box h3{margin:0 0 2px;font:700 15px Georgia,serif}.hint{font-size:12px;color:var(--faint);margin-bottom:12px}
+.g{display:inline-grid;place-items:center;min-width:26px;height:22px;padding:0 6px;border-radius:3px;font:800 12px "SF Mono",monospace;color:#fff}
+.gA{background:var(--A)}.gNR{background:var(--faint)}.gB{background:var(--B)}.gC{background:var(--C)}.gD{background:var(--D)}.gF{background:var(--F)}
+.bar{display:grid;grid-template-columns:34px 1fr 64px;gap:10px;align-items:center;padding:5px 0;font-size:13px}.track{height:9px;background:var(--line2);border-radius:5px;overflow:hidden}.fill{height:100%}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line2);white-space:nowrap}
+th{font:600 10.5px "SF Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);background:var(--panel2);cursor:pointer;user-select:none}
+td.n,th.n{text-align:right;font-family:"SF Mono",monospace;font-variant-numeric:tabular-nums}
+.tw{background:var(--panel);border:1px solid var(--line);border-radius:4px;overflow:hidden}.sc{overflow-x:auto}
+tbody tr.row{cursor:pointer}tbody tr.row:hover{background:var(--panel2)}
+.det td{background:var(--panel2);white-space:normal;padding:12px 16px}.flag{display:inline-block;margin:2px 4px 2px 0;padding:2px 8px;border-radius:12px;font-size:12px;background:var(--chip);color:var(--soft)}
+.flag.hard{background:color-mix(in srgb,var(--F) 15%,transparent);color:var(--F);font-weight:700}
+.bar2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+select,input{background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:7px 10px;font:inherit}
+input{flex:1;min-width:180px}.count{margin-left:auto;font-size:12px;color:var(--faint)}
+.proofnote{font-size:12.5px;color:var(--soft);margin-top:10px;line-height:1.5}
+.pending{padding:14px;border:1px dashed var(--line);border-radius:4px;color:var(--soft);font-size:13px}
+.addr{color:var(--faint);font-size:11.5px}
+footer{max-width:1240px;margin:0 auto;padding:0 24px 40px;font-size:11.5px;color:var(--faint);font-style:italic;line-height:1.5}
+@media(max-width:860px){.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header>
+  <div class="brand"><span class="mk">L</span>Launch<em>scope</em></div>
+  <div class="tag">INDEPENDENT LAUNCH RATINGS</div>
+  <div class="hl">Every new token, graded in its first hours.</div>
+  <div class="sub" id="sub"></div>
+</header>
+<main>
+  <div class="cards" id="cards"></div>
+  <div class="grid">
+    <div class="box"><h3>Proof: did the grades work?</h3><div class="hint">Every launch we rated, re-checked 24h+ later. Rugged = liquidity down 90%+ or pool gone.</div><div id="proof"></div></div>
+    <div class="box"><h3>Today's grade mix</h3><div class="hint">Share of fresh launches per grade</div><div id="mix"></div></div>
+  </div>
+  <div class="bar2">
+    <input id="q" placeholder="Search symbol, name, address...">
+    <select id="fn"><option value="">All chains</option></select>
+    <select id="fg"><option value="">All grades</option><option>A</option><option>B</option><option>C</option><option>D</option><option>F</option><option value="NR">NR (pending)</option></select>
+    <span class="count" id="cnt"></span>
+  </div>
+  <div class="tw"><div class="sc"><table id="t">
+    <thead><tr><th data-k="grade">Grade</th><th data-k="score" class="n">Score</th><th data-k="symbol">Token</th><th data-k="chain">Chain</th><th data-k="age_h" class="n">Age</th><th data-k="liq" class="n">Liquidity</th><th data-k="fdv" class="n">FDV</th><th data-k="top_pct" class="n">Top wallets</th><th data-k="flags">Red flags</th></tr></thead>
+    <tbody id="tb"></tbody></table></div></div>
+</main>
+<footer id="foot"></footer>
+<script>
+/*__DATA__*/
+const D=window.DATA, L=D.launches;
+const money=n=>{n=n||0;return n>=1e9?'$'+(n/1e9).toFixed(2)+'B':n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(1)+'K':'$'+n.toFixed(0)};
+const age=h=>h<1?Math.round(h*60)+'m':h<48?h.toFixed(1)+'h':(h/24).toFixed(1)+'d';
+const gc=g=>`<span class="g g${g}">${g}</span>`;const RANK={A:0,B:1,C:2,D:3,F:4,NR:5};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rated=L.filter(x=>x.grade!=='NR'),fails=rated.filter(x=>x.grade==='F').length, safe=L.filter(x=>x.grade==='A'||x.grade==='B').length;
+document.getElementById('sub').textContent=`${L.length} launches rated across ${D.networks.join(', ')} · snapshot ${D.generated} · ${D.n_snapshots} rating run(s) on file`;
+document.getElementById('cards').innerHTML=[['Launches rated',L.length],['Graded F (avoid)',fails+' ('+Math.round(fails/Math.max(rated.length,1)*100)+'%)'],['Pending scan (NR)',L.length-rated.length],['Graded A/B',safe],['Outcomes tracked',D.n_tracked]]
+ .map(c=>`<div><div class="k">${c[0]}</div><div class="v">${c[1]}</div></div>`).join('');
+// mix
+const tot=Math.max(L.length,1);
+document.getElementById('mix').innerHTML=['A','B','C','D','F','NR'].map(g=>{const n=D.grades[g]||0;return `<div class="bar">${gc(g)}<div class="track"><div class="fill g${g}" style="width:${n/tot*100}%"></div></div><span class="mono">${n} · ${Math.round(n/tot*100)}%</span></div>`}).join('');
+// proof
+const P=D.proof||{}, PG=Object.keys(P);
+document.getElementById('proof').innerHTML = PG.length ? ('ABCDF'.split('').filter(g=>P[g]).map(g=>{const p=P[g];return `<div class="bar">${gc(g)}<div class="track"><div class="fill gF" style="width:${p.rate||0}%"></div></div><span class="mono">${p.rate}% (${p.rug}/${p.n})</span></div>`}).join('')+`<div class="proofnote">Rug rate per grade at rating time. If grades work, F rugs far more than A/B. ${D.n_tracked} launches judged so far, grows every run.</div>`)
+ : `<div class="pending">Collecting. Outcomes are judged 24h after rating, so the first proof numbers land after the next day of runs. Every rating is frozen at the time it was made: no hindsight.</div>`;
+// table
+const fn=document.getElementById('fn');D.networks.forEach(n=>fn.add(new Option(n,n)));
+let sk='score',sd=-1,open=null;
+function draw(){
+ const q=document.getElementById('q').value.toLowerCase(),c=fn.value,g=document.getElementById('fg').value;
+ let r=L.filter(x=>(!q||(x.symbol+x.name+x.token).toLowerCase().includes(q))&&(!c||x.chain===c)&&(!g||x.grade===g));
+ r.sort((a,b)=>{let A=a[sk],B=b[sk];if(sk==='flags'){A=a.hard.length*10+a.flags.length;B=b.hard.length*10+b.flags.length}
+  if(sk==='grade'){A=RANK[A];B=RANK[B]}if(typeof A==='string')return A.localeCompare(B)*sd;return((A??-1)-(B??-1))*sd});
+ document.getElementById('tb').innerHTML=r.map((x,i)=>{const id=x.net+x.pool;const nf=x.hard.length+x.flags.length;
+  let h=`<tr class="row" data-id="${id}"><td>${gc(x.grade)}</td><td class="n">${x.score}</td><td><b>${esc(x.symbol)}</b> <span class="addr">${esc(x.name)}</span></td><td>${x.chain}</td><td class="n">${age(x.age_h)}</td><td class="n">${money(x.liq)}</td><td class="n">${money(x.fdv)}</td><td class="n">${x.top_pct==null?'—':x.top_pct+'%'}</td><td>${x.hard.length?`<span class="flag hard">${esc(x.hard[0])}</span>`:''}${nf>(x.hard.length?1:0)?`<span class="flag">+${nf-(x.hard.length?1:0)} more</span>`:(!nf?'<span class="flag">none</span>':'')}</td></tr>`;
+  if(open===id)h+=`<tr class="det"><td colspan="9"><b>Why ${x.grade}:</b> safety ${x.safety}/40 · holders ${x.holder_score}/25 · market ${x.market}/25 · track ${x.track}/10<br>${x.hard.map(s=>`<span class="flag hard">${esc(s)}</span>`).join('')}${x.flags.map(s=>`<span class="flag">${esc(s)}</span>`).join('')||''}<br><span class="addr mono">token ${esc(x.token)} · pool ${esc(x.pool)}</span> · buys/sells 24h ${x.buys}/${x.sells}${x.holders?` · ${x.holders} holders`:''}${x.lp_locked?' · LP locked':''}</td></tr>`;
+  return h}).join('');
+ document.getElementById('cnt').textContent=r.length+' launches';
+}
+document.getElementById('tb').addEventListener('click',e=>{const tr=e.target.closest('tr.row');if(!tr)return;open=open===tr.dataset.id?null:tr.dataset.id;draw()});
+['q','fn','fg'].forEach(i=>document.getElementById(i).addEventListener('input',draw));
+document.querySelectorAll('#t th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sk===k)sd*=-1;else{sk=k;sd=(k==='symbol'||k==='chain'||k==='grade')?1:-1}draw()}));
+draw();
+document.getElementById('foot').textContent=`Launchscope · independent research, not investment advice, not a credit rating. Grades use public data (GeckoTerminal, GoPlus, Solana RPC) at rating time; a good grade is not a safe investment, a bad one flags measurable risk. Snapshot ${D.generated}.`;
+</script></body></html>
