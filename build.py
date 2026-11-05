@@ -249,6 +249,8 @@ def rate(L):
     else:
         L["top_pct"] = ext.get("top_pct")
         g = grade(score, hard, L)
+        if g == "F" and not hard:
+            hard = [f"Low overall score {score}/100: " + ", ".join((fl + mfl)[:2])]
     L.update({"score": score, "grade": g, "hard": hard, "flags": fl + mfl,
               "safety": round(c), "holder_score": round(ext.get("hs", 0)), "market": round(m), "track": round(t),
               "top_pct": ext.get("top_pct"), "creator_pct": ext.get("creator_pct"),
